@@ -41,7 +41,7 @@ def add_contact():
 
 def find_contact():
     """按名字查联系人（已完成，别动）"""
-    key = input("请输入要查的名字/电话：").split()
+    key = input("请输入要查的名字/电话：").strip()
     for c in contacts:
         if c["name"] == key or c["phone"] == key:
             print(f"找到了：{c['name']}   {c['phone']}")
@@ -60,7 +60,7 @@ def show_all():
 
 def del_contact():
     """按名字删掉一个联系人（D13 已完成，别动）"""
-    key = input("请输入要删除的名字：").split()
+    key = input("请输入要删除的名字：").strip()
     for i, c in enumerate(contacts):
         if c["name"] == key:
             del contacts[i]
@@ -68,7 +68,30 @@ def del_contact():
             show_all()
             return
     print(f"通讯录里没有 {key}")
-
+def change_contact():
+    key = input("请输入要修改的名字：").strip()
+    for i, c in enumerate(contacts):
+        if c["name"] == key:
+            k = input("请输入要修改的字段（name/phone）：").strip()
+            if k not in ["name", "phone"]:
+                print("字段不对")
+                return
+        
+            v = input("请输入新的值：").strip()
+            if v == "":
+                print("值不能为空")
+                return
+            try:
+                if k == "phone":
+                    int(v)
+            except ValueError:
+                print("电话不是数字，重来")
+                return
+            contacts[i][k] = v
+            print(f"已修改 {key} 的 {k} 为 {v}")
+            show_all()
+            return
+    print(f"通讯录里没有 {key}")
 
 def save_data():
     """把 contacts 存进 contacts.json        ← 今天要写的第 1 个函数"""
@@ -120,7 +143,7 @@ def main():
 
     while True:
         print()
-        print("1 加联系人   2 查联系人   3 看全部   4 删联系人   0 退出")
+        print("1 加联系人   2 查联系人   3 看全部   4 删联系人   0 退出   5 改联系人")
         choice = input("请选择：")
 
         if choice == "1":
@@ -131,6 +154,8 @@ def main():
             show_all()
         elif choice == "4":
             del_contact()
+        elif choice == "5":
+            change_contact()
         elif choice == "0":
             save_data()      # ← TODO 3 之二：退出前存一次（不然白加）
             print("再见")
