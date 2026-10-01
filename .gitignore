@@ -1,2 +1,6 @@
+# Python 编译缓存（程序跑起来会自动生成）
 __pycache__/
 *.pyc
+
+# 程序运行时自己生成的数据文件
+contacts.json
